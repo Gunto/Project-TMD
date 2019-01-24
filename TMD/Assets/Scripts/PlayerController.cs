@@ -8,8 +8,7 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private Rigidbody2D rb;
     private Vector3 m_Velocity = Vector3.zero;
-    private float horizontalMove;
-    private float verticalMove;
+    private Vector3 moveVelocity = Vector3.zero;
 
     [Range(0, .3f)] public float movementSmooth = 0.05f;
 
@@ -23,20 +22,23 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal") * speed;
-        verticalMove = Input.GetAxisRaw("Vertical") * speed;
-        animator.SetFloat("Horizontal", horizontalMove);
-        animator.SetFloat("Vertical", verticalMove);
+        moveVelocity.x = Input.GetAxisRaw("Horizontal") * speed;
+        moveVelocity.y = Input.GetAxisRaw("Vertical") * speed;
+        if (moveVelocity != Vector3.zero)
+        {
+            animator.SetFloat("moveX", moveVelocity.x);
+            animator.SetFloat("moveY", moveVelocity.y);
+        }
     }
 
     void FixedUpdate()
     {
-        Move(horizontalMove * Time.fixedDeltaTime, verticalMove * Time.fixedDeltaTime);
+        Move(moveVelocity.x * Time.fixedDeltaTime, moveVelocity.y * Time.fixedDeltaTime);
     }
 
     private void Move(float horizontal, float vertical)
     {
-        Vector3 targetVelocity = new Vector2(horizontal * 10f, vertical * 10f);
+        Vector3 targetVelocity = moveVelocity.normalized * 5f;
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, movementSmooth);
     }
 }
