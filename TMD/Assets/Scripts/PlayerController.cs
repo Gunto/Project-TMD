@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector3 m_Velocity = Vector3.zero;
     private Vector3 moveVelocity = Vector3.zero;
+    private SpriteRenderer spriteRenderer;
+    private SpriteMask spriteMask;
 
     [Range(0, .3f)] public float movementSmooth = 0.05f;
 
@@ -17,6 +19,8 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteMask = GetComponent<SpriteMask>();
     }
 
     // Update is called once per frame
@@ -29,6 +33,7 @@ public class PlayerController : MonoBehaviour
             animator.SetFloat("moveX", moveVelocity.x);
             animator.SetFloat("moveY", moveVelocity.y);
         }
+        spriteMask.sprite = spriteRenderer.sprite;
     }
 
     void FixedUpdate()
