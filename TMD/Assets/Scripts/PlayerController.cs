@@ -4,15 +4,32 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    #region Singleton
+    static PlayerController _instance;
+    public static PlayerController Instance { get { return _instance; } }
+    #endregion
+
     public float speed;
     private Animator animator;
     private Rigidbody2D rb;
     private Vector3 m_Velocity = Vector3.zero;
     private Vector3 moveVelocity = Vector3.zero;
+    [SerializeField]
+    private Vector2 movementDirection;
     private SpriteRenderer spriteRenderer;
     private SpriteMask spriteMask;
-
     [Range(0, .3f)] public float movementSmooth = 0.05f;
+
+    // Properties
+    public Vector2 MovementDirection
+    {
+        get { return movementDirection; }
+    }
+
+    void Awake()
+    {
+        _instance = this;
+    }
 
     // Use this for initialization
     void Start()
@@ -26,8 +43,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        moveVelocity.x = Input.GetAxisRaw("Horizontal") * speed;
-        moveVelocity.y = Input.GetAxisRaw("Vertical") * speed;
+        movementDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        moveVelocity.x = movementDirection.x * speed;
+        moveVelocity.y = movementDirection.y * speed;
         if (moveVelocity != Vector3.zero)
         {
             animator.SetFloat("moveX", moveVelocity.x);
