@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveVelocity = Vector3.zero;
     [SerializeField]
     private Vector2 movementDirection;
+    private bool diagonal;
     private SpriteRenderer spriteRenderer;
     private SpriteMask spriteMask;
     [Range(0, .3f)] public float movementSmooth = 0.05f;
@@ -25,6 +26,8 @@ public class PlayerController : MonoBehaviour
     {
         get { return movementDirection; }
     }
+
+    public bool Diagonal { get { return diagonal; } }
 
     void Awake()
     {
@@ -44,6 +47,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         movementDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        diagonal = movementDirection.x * movementDirection.y != 0 ? true : false;
         moveVelocity.x = movementDirection.x * speed;
         moveVelocity.y = movementDirection.y * speed;
         if (moveVelocity != Vector3.zero)
