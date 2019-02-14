@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿// BUG: Sometimes pushing is set to true when the player has stopped input on contact
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,6 +37,7 @@ public class MoveObject : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         diagonal = player.Diagonal;
+        pushing = false;
         // If not moving diagonally into object, determine which direction to push object
         if (!diagonal)
         {
@@ -77,9 +80,12 @@ public class MoveObject : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
-            StopCoroutine(pushCoroutine);
-            pushing = false;
-            waiting = false;
+            if (pushCoroutine != null)
+            {
+                StopCoroutine(pushCoroutine);
+                pushing = false;
+                waiting = false;
+            }
         }
     }
 

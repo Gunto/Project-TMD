@@ -10,10 +10,11 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     public float speed;
+    public TriggerInteract trigger;
     private Animator animator;
     private Rigidbody2D rb;
     private Vector3 m_Velocity = Vector3.zero;
-    private Vector3 moveVelocity = Vector3.zero;
+    // private Vector3 moveVelocity = Vector3.zero;
     [SerializeField]
     private Vector2 movementDirection;
     private bool diagonal;
@@ -46,26 +47,38 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        movementDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        diagonal = movementDirection.x * movementDirection.y != 0 ? true : false;
-        moveVelocity.x = movementDirection.x * speed;
-        moveVelocity.y = movementDirection.y * speed;
-        if (moveVelocity != Vector3.zero)
+        UpdateMovement();
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            animator.SetFloat("moveX", moveVelocity.x);
-            animator.SetFloat("moveY", moveVelocity.y);
+            if (trigger.InRange)
+            {
+                Debug.Log("Object is: " + trigger.ObtainableItem);
+            }
         }
         spriteMask.sprite = spriteRenderer.sprite;
     }
 
+    void UpdateMovement()
+    {
+        movementDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        diagonal = movementDirection.x * movementDirection.y != 0 ? true : false;
+        // moveVelocity.x = movementDirection.x;
+        // moveVelocity.y = movementDirection.y;
+        if (movementDirection != Vector2.zero)
+        {
+            animator.SetFloat("moveX", movementDirection.x);
+            animator.SetFloat("moveY", movementDirection.y);
+        }
+    }
+
     void FixedUpdate()
     {
-        Move(moveVelocity.x * Time.fixedDeltaTime, moveVelocity.y * Time.fixedDeltaTime);
+        Move(movementDirection.x * Time.fixedDeltaTime, movementDirection.y * Time.fixedDeltaTime);
     }
 
     private void Move(float horizontal, float vertical)
     {
-        Vector3 targetVelocity = moveVelocity.normalized * 5f;
+        Vector3 targetVelocity = movementDirection.normalized * speed;
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, movementSmooth);
     }
 }
