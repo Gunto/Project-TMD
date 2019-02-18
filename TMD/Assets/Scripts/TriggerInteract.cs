@@ -1,38 +1,47 @@
-﻿using System.Collections;
+﻿// TODO: Create interface IObtainableItem to reference
+// TODO: Add logic to try and add to inventory and solve after
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TriggerInteract : MonoBehaviour
 {
-    private bool inRange;
-    private GameObject obtainableItem;
+    private PlayerInventory playerInventory;
+    private GameObject item;
 
-    // Properties
-    public bool InRange { get { return inRange; } }
-    public GameObject ObtainableItem { get { return obtainableItem; } }
+    // Property
+    public GameObject Item { get { return item; } }
 
     // Start is called before the first frame update
     void Start()
     {
-        inRange = false;
+        playerInventory = PlayerInventory.Instance;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-
+        item = other.gameObject;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        inRange = true;
-        // Check if item can be picked up
-        obtainableItem = other.gameObject;
+        item = null;
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    public void PickupItem()
     {
-        inRange = false;
-        obtainableItem = null;
+        // Check if item is obtainable
+        if (item != null) // Change to GetComponent<Interface>() 
+        {
+            // Add to inventory
+            playerInventory.AddToInventory(item);
+            // Remove from world (Handle here or in inventory?)
+            GameObject.Destroy(item);
+        }
+        else
+        {
+            return;
+        }
     }
 }

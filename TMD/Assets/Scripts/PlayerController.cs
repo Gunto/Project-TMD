@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     #region Singleton
-    static PlayerController _instance;
+    private static PlayerController _instance;
     public static PlayerController Instance { get { return _instance; } }
     #endregion
 
@@ -52,7 +52,6 @@ public class PlayerController : MonoBehaviour
         spriteMask = GetComponent<SpriteMask>();
         itemCanvas = GameObject.FindGameObjectWithTag("Item UI");
         UIItems = itemCanvas.GetComponentsInChildren<SetItemAsActive>();
-        Debug.Log(UIItems.Length);
     }
 
     // Update is called once per frame
@@ -61,10 +60,7 @@ public class PlayerController : MonoBehaviour
         UpdateMovement();
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (trigger.InRange)
-            {
-                Debug.Log("Object is: " + trigger.ObtainableItem);
-            }
+            Debug.Log(trigger.Item);
         }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
