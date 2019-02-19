@@ -1,5 +1,6 @@
 ﻿// TODO: Create interface IObtainableItem to reference
 // TODO: Add logic to try and add to inventory and solve after
+// TODO: Determine which item to pickup if one item is on top of you and in front
 
 using System.Collections;
 using System.Collections.Generic;
