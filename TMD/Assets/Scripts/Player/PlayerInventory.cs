@@ -12,10 +12,10 @@ public class PlayerInventory : MonoBehaviour
     public static PlayerInventory Instance { get { return _instance; } }
     #endregion
 
-    private List<GameObject> inventory;
+    private List<IItem> inventory;
 
     // Property
-    public List<GameObject> Inventory { get { return inventory; } }
+    public List<IItem> Inventory { get { return inventory; } }
 
     void Awake()
     {
@@ -24,15 +24,14 @@ public class PlayerInventory : MonoBehaviour
 
     void Start()
     {
-        inventory = new List<GameObject>();
-        // Set maximum size?
+        inventory = new List<IItem>(2);
     }
 
     // Add an item to the inventory
-    public void AddToInventory(GameObject item)
+    public void AddToInventory(IItem item)
     {
         // Check if item is in inventory and stackable
-        if (inventory.Contains(item))
+        if (PlayerHasItem(item))
         { // Add && isStackable
             // Change stack amount (Stack limit?)
         }
@@ -43,9 +42,9 @@ public class PlayerInventory : MonoBehaviour
     }
 
     // Incomplete method - Add multiples of an item to the inventory
-    public void AddToInventory(GameObject item, int amount)
+    public void AddToInventory(IItem item, int amount)
     {
-        if (inventory.Contains(item))
+        if (PlayerHasItem(item))
         {
             // Same as above
         }
@@ -62,19 +61,39 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-
-
     // Remove an item from the inventory
-    public void RemoveFromInventory(GameObject item)
+    public void RemoveFromInventory()
     {
-        // Check if item exists before calling this function? (Here or where called?)
-        inventory.Remove(item);
+        // Removes the active item
+        foreach (IItem item in inventory)
+        {
+            if (item.ActiveItem)
+            {
+                inventory.Remove(item);
+                return;
+            }
+        }
     }
 
     // Incomplete method - Remove multiples of an item from the inventory
-    public void RemoveFromInventory(GameObject item, int amount)
+    public void RemoveFromInventory(IItem item, int amount)
     {
         // Add logic for removing X of item
         inventory.Remove(item);
+    }
+
+    // Check if player has the item
+    public bool PlayerHasItem(IItem item)
+    {
+        bool result = false;
+        foreach (IItem i in inventory)
+        {
+            if (i.ItemName == item.ItemName)
+            {
+                result = true;
+            }
+        }
+
+        return result;
     }
 }

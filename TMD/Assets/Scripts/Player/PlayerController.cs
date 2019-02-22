@@ -10,25 +10,14 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance { get { return _instance; } }
     #endregion
 
-    public TriggerInteract trigger;
-
-    // Movement
     public float speed;
     private Rigidbody2D rb;
     private Vector3 m_Velocity = Vector3.zero;
-    [SerializeField] private Vector2 movementDirection;
+    [HideInInspector] private Vector2 movementDirection;
     private bool diagonal;
     [Range(0, .3f)] public float movementSmooth = 0.05f;
     private Animator animator;
 
-
-    // Sprites
-    private SpriteRenderer spriteRenderer;
-    private SpriteMask spriteMask;
-
-    // UI
-    private GameObject itemCanvas;
-    private SetItemAsActive[] UIItems;
 
     // Properties
     public Vector2 MovementDirection
@@ -48,32 +37,11 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteMask = GetComponent<SpriteMask>();
-        itemCanvas = GameObject.FindGameObjectWithTag("Item UI");
-        UIItems = itemCanvas.GetComponentsInChildren<SetItemAsActive>();
+
     }
 
     // Update is called once per frame
     void Update()
-    {
-        UpdateMovement();
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log(trigger.Item);
-        }
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            //UI Switch
-            foreach (SetItemAsActive item in UIItems)
-            {
-                item.SwitchItem();
-            }
-        }
-        spriteMask.sprite = spriteRenderer.sprite;
-    }
-
-    void UpdateMovement()
     {
         movementDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         diagonal = movementDirection.x * movementDirection.y != 0 ? true : false;

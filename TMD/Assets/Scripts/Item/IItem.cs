@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IItem
 {
-    bool Obtainable { get; }
-    string itemName { get; }
+    string ItemName { get; }
+
+    bool ActiveItem { get; set; }
 }

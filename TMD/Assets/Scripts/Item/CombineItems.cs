@@ -15,7 +15,6 @@ public class CombineItems : MonoBehaviour
         combinations = new Dictionary<string, string>();
         // Determine way to populate Dictionary with combinations
         AddCombination("handle-stick", "cane");
-        Debug.Log(CombineItem("handle", "stick"));
     }
 
     private void AddCombination(string itemName, string item)
@@ -23,6 +22,7 @@ public class CombineItems : MonoBehaviour
         combinations.Add(itemName, item);
     }
 
+    // Returns the name of hte combined object
     public string CombineItem(string item1, string item2)
     {
         // Sort item names
@@ -40,25 +40,4 @@ public class CombineItems : MonoBehaviour
             return null;
         }
     }
-
-    // public bool CombinationExists(string attempt)
-    // {
-    //     // Get combination keys
-    //     List<string> keys = combinationDictionary.Keys.ToList();
-    //     // Sort combination alphabetically
-    //     Array.Sort(attempt);
-    //     bool exists = false;
-    //     // Loop through each combination
-    //     foreach (string key in keys)
-    //     {
-    //         // If combination matches return true
-    //         if (key[0] == attempt[0] && key[1] == attempt[1])
-    //         {
-    //             exists = true;
-    //             return exists;
-    //         }
-    //     }
-
-    //     return exists;
-    // }
 }

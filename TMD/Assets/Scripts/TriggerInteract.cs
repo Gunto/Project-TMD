@@ -1,6 +1,8 @@
 ﻿// TODO: Create interface IObtainableItem to reference
 // TODO: Add logic to try and add to inventory and solve after
 // TODO: Determine which item to pickup if one item is on top of you and in front
+// TODO: Add validation for inventory capacity
+// TODO: Swap item
 
 using System.Collections;
 using System.Collections.Generic;
@@ -32,16 +34,17 @@ public class TriggerInteract : MonoBehaviour
 
     public void PickupItem()
     {
-        // Check if item is obtainable
-        if (item != null) // Change to GetComponent<Interface>() 
+        // Check if there is an item and it is obtainable
+        if (item != null && item.GetComponent<IItem>() != null) // Change to GetComponent<Interface>() 
         {
             // Add to inventory
-            playerInventory.AddToInventory(item);
-            // Remove from world (Handle here or in inventory?)
+            playerInventory.AddToInventory(item.GetComponent<IItem>());
+            // Remove from world
             GameObject.Destroy(item);
         }
         else
         {
+            Debug.Log("Nothing to pickup");
             return;
         }
     }
